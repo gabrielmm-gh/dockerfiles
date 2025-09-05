@@ -39,4 +39,4 @@ services:
       - "22000:22000/udp"
       - "21027:21027/udp"
     volumes:
-      - /srv/dev-disk-by-uuid-1234abcd/appdata/syncthing:/notes
+      - /dev/sda1/data/appdata/syncthing:/notes

@@ -1,0 +1,43 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    ports: ["3000:3000"]
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: "home.local:3000,localhost:3000,127.0.0.1:3000"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-100}"
+      TZ:   "${TZ:-Europe/Oslo}"
+    volumes:
+      # Replace the left side with your actual Shared Folder path
+      - /srv/dev-disk-by-uuid-1234abcd/appdata/homepage:/app/config
+      # Optional: container discovery widgets
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports: ["9443:9443", "8000:8000"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /srv/dev-disk-by-uuid-1234abcd/appdata/portainer:/data
+
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    restart: unless-stopped
+    hostname: syncthing
+    environment:
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-100}"
+      TZ:   "${TZ:-Europe/Oslo}"
+    ports:
+      - "8384:8384"
+      - "22000:22000/tcp"
+      - "22000:22000/udp"
+      - "21027:21027/udp"
+    volumes:
+      - /srv/dev-disk-by-uuid-1234abcd/appdata/syncthing:/config
+      - /srv/mergerfs/media:/data   # or a single-disk path if you don’t use mergerfs

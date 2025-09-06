@@ -11,7 +11,7 @@ services:
       TZ:   "${TZ:-Europe/Oslo}"
     volumes:
       # Replace the left side with your actual Shared Folder path
-      - srv/data/appdata/homepage:/app/config
+      - ./appdata/homepage:/app/config
       # Optional: container discovery widgets
       # - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -22,7 +22,7 @@ services:
     ports: ["9443:9443", "8000:8000"]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /srv/data/appdata/portainer:/data
+      - ./appdata/portainer:/data
 
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
@@ -39,4 +39,4 @@ services:
       - "22000:22000/udp"
       - "21027:21027/udp"
     volumes:
-      - /srv/data/appdata/syncthing:/notes
+      - ./appdata/syncthing:/notes
